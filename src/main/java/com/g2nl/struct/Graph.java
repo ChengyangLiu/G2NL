@@ -1,3 +1,5 @@
+package com.g2nl.structure;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 

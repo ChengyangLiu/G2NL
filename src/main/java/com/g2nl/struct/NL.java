@@ -1,3 +1,5 @@
+package com.g2nl.structure;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -74,8 +76,6 @@ public class NL {
   }
 
   public void printNL() {
-    final String PRE = "是";
-    final String PRONOUN = "其";
     String rlt = "";
     for (int index = 0; index < this.vNum; index++) {
       if (activeList.get(index) == false) {
@@ -83,12 +83,12 @@ public class NL {
       }
       RDF vtmp = this.vRDF.get(index);
       long id = vtmp.resource();
-      rlt += vtmp.type() + vtmp.value();
+      rlt += vtmp.type() + " " + vtmp.value();
       Iterator<RDF> eIter = eRDF.iterator();
       while (eIter.hasNext()) {
         RDF etmp = eIter.next();
         if (etmp.resource() == id) {
-          rlt += "," + etmp.type()
+          rlt += ", " + etmp.type() + " "
           + this.vRDF.get(Integer.valueOf(etmp.value())).value();
         }
       }
@@ -99,20 +99,20 @@ public class NL {
 
   public static void main(String[] args) {
     Graph testGraph = new Graph();
-    testGraph.addVertex(0, "导演", "詹姆斯·卡梅隆");
-    testGraph.addVertex(1, "电影", "《泰坦尼克号》");
-    testGraph.addVertex(2, "国家", "加拿大");
-    testGraph.addVertex(3, "学校", "加州州立大学");
-    testGraph.addVertex(4, "奖项", "奥斯卡最佳导演奖");
-    testGraph.addVertex(5, "人名", "Jack");
-    testGraph.addVertex(6, "人名", "Rose");
-    testGraph.addEdge(0, 0, 1, "代表作", "Data");
-    testGraph.addEdge(1, 1, 0, "导演", "Data");
-    testGraph.addEdge(2, 0, 2, "国籍", "Data");
-    testGraph.addEdge(3, 0, 3, "毕业于", "Data");
-    testGraph.addEdge(4, 0, 4, "荣获", "Data");
-    testGraph.addEdge(5, 1, 5, "男主角", "Data");
-    testGraph.addEdge(6, 1, 6, "女主角", "Data");
+    testGraph.addVertex(0, "Director", "James Cameron");
+    testGraph.addVertex(1, "Movie", "\"Titanic\"");
+    testGraph.addVertex(2, "Country", "Canada");
+    testGraph.addVertex(3, "School", "California State University");
+    testGraph.addVertex(4, "Prize", "\"Oscar Best Director Award\"");
+    testGraph.addVertex(5, "Name", "Jack");
+    testGraph.addVertex(6, "Name", "Rose");
+    testGraph.addEdge(0, 0, 1, "created", "Data");
+    testGraph.addEdge(1, 1, 0, "was created by", "Data");
+    testGraph.addEdge(2, 0, 2, "is born in", "Data");
+    testGraph.addEdge(3, 0, 3, "graduated in", "Data");
+    testGraph.addEdge(4, 0, 4, "won", "Data");
+    testGraph.addEdge(5, 5, 1, "is hero of", "Data");
+    testGraph.addEdge(6, 6, 1, "is heroine of", "Data");
 
     // print graph
     System.out.println("--------------Graph-------------");

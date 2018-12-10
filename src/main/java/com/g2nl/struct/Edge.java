@@ -1,3 +1,4 @@
+package com.g2nl.structure;
 
 public class Edge {
   private long id;

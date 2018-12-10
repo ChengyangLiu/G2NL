@@ -1,3 +1,4 @@
+package com.g2nl.structure;
 
 public class Vertex {
   private long id;
