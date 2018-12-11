@@ -3,6 +3,9 @@ package com.g2nl.io;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.File;
+import java.io.Writer;
+import java.io.FileWriter;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,6 +60,24 @@ public class IOFactory {
 			e.printStackTrace();
 		}
     return true;
+  }
+
+  public static void writeFile(Graph g, final String location) {
+
+  }
+
+  public static void writeFile(final String content, final String location) {
+    String nlFile = location + ".nl";
+    try {
+      File file = new File(nlFile);
+      Writer writer = new FileWriter(file);
+      writer.write(content);
+      writer.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }

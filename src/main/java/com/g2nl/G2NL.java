@@ -39,6 +39,7 @@ public class G2NL {
     System.out.println("-------------NL Opt-------------");
     String rlt = testNL.optNL();
     System.out.println(rlt);
+    IOFactory.writeFile(rlt, location);
   }
 
 }
