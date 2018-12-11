@@ -1,7 +1,13 @@
-package com.g2nl.structure;
+package com.g2nl.struct;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import org.aksw.triple2nl.TripleConverter;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.graph.NodeFactory;
 
 public class NL {
   private long vNum;
@@ -23,7 +29,7 @@ public class NL {
     Iterator<Vertex> vIter = vList.iterator();
     while (vIter.hasNext()) {
       Vertex v = vIter.next();
-      this.vRDF.add(new RDF(v.id(), v.label(), v.data()));
+      this.vRDF.add(new RDF(v.id(), v.label().trim().replace(" ", "_"), v.data().trim().replace(" ", "_")));
     }
   }
 
@@ -32,7 +38,7 @@ public class NL {
     Iterator<Edge> eIter = eList.iterator();
     while (eIter.hasNext()) {
       Edge e = eIter.next();
-      this.eRDF.add(new RDF(e.src(), e.label(), String.valueOf(e.dst())));
+      this.eRDF.add(new RDF(e.src(), e.label().trim().replace(" ", "_"), String.valueOf(e.dst()).trim().replace(" ", "_")));
     }
   }
 
@@ -71,8 +77,51 @@ public class NL {
     }
   }
 
-  public void optimize() {
+  public String optNL() {
+    String rlt = "";
+    int count = 1;
+    for (int index = 0; index < this.vNum; index++) {
+      if (activeList.get(index) == false) {
+        continue;
+      }
+      List<Triple> tList = new ArrayList<Triple>();
+      RDF vtmp = this.vRDF.get(index);
+      long id = vtmp.resource();
+      Iterator<RDF> eIter = eRDF.iterator();
+      while (eIter.hasNext()) {
+        RDF etmp = eIter.next();
+        if (etmp.resource() == id) {
+          Triple t = Triple.create(
+      			 NodeFactory.createURI("http://dbpedia.org/resource/" + vtmp.value()),
+      			 NodeFactory.createURI("http://dbpedia.org/ontology/" + etmp.type()),
+      			 NodeFactory.createURI("http://dbpedia.org/resource/" + this.vRDF.get(Integer.valueOf(etmp.value())).value()));
+          tList.add(t);
+        }
+      }
+      // print URI (subject-predicate-object)
+      //printTripleList(tList);
 
+      // Optionally, we can declare a knowledge base that contains the triple.
+      // This can be useful during the verbalization process, e.g. the KB could contain labels for entities.
+      // Here, we use the DBpedia SPARQL endpoint.
+      SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+      // create the triple converter
+      TripleConverter converter = new TripleConverter(endpoint);
+      // convert the triple into natural language
+      String text = converter.convertTriplesToText(tList);
+      rlt += "(" + String.valueOf(count++) + "):" + text + "\n";
+    }
+    return rlt;
+  }
+
+  public void printTripleList(List<Triple> tList) {
+    String str = "";
+    Iterator<Triple> tIter = tList.iterator();
+    while (tIter.hasNext()) {
+      Triple t = tIter.next();
+      str += t.getSubject() + "-" + t.getPredicate() + "-" + t.getObject() + "\n";
+    }
+    System.out.println("Test:\n"+ str);
   }
 
   public void printNL() {
@@ -95,44 +144,6 @@ public class NL {
       rlt += "\n";
     }
     System.out.print(rlt);
-  }
-
-  public static void main(String[] args) {
-    Graph testGraph = new Graph();
-    testGraph.addVertex(0, "Director", "James Cameron");
-    testGraph.addVertex(1, "Movie", "\"Titanic\"");
-    testGraph.addVertex(2, "Country", "Canada");
-    testGraph.addVertex(3, "School", "California State University");
-    testGraph.addVertex(4, "Prize", "\"Oscar Best Director Award\"");
-    testGraph.addVertex(5, "Name", "Jack");
-    testGraph.addVertex(6, "Name", "Rose");
-    testGraph.addEdge(0, 0, 1, "created", "Data");
-    testGraph.addEdge(1, 1, 0, "was created by", "Data");
-    testGraph.addEdge(2, 0, 2, "is born in", "Data");
-    testGraph.addEdge(3, 0, 3, "graduated in", "Data");
-    testGraph.addEdge(4, 0, 4, "won", "Data");
-    testGraph.addEdge(5, 5, 1, "is hero of", "Data");
-    testGraph.addEdge(6, 6, 1, "is heroine of", "Data");
-
-    // print graph
-    System.out.println("--------------Graph-------------");
-    System.out.println(testGraph.toString());
-
-    NL testNL = new NL();
-    testNL.addVRDF(testGraph.vList());
-    testNL.addERDF(testGraph.eList());
-
-    // print RDF
-    System.out.println("---------------RDF--------------");
-    testNL.printRDF();
-
-    // do something for NLGraph
-    testNL.filterActive();
-    testNL.optimize();
-
-    // print NL
-    System.out.println("---------------NL---------------");
-    testNL.printNL();
   }
 
 }

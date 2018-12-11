@@ -1,0 +1,3 @@
+[submodule "submodule/SemWeb2NL"]
+	path = submodule/SemWeb2NL
+	url = https://github.com/ChengyangLiu/SemWeb2NL.git

@@ -1,4 +1,4 @@
-package com.g2nl.structure;
+package com.g2nl.struct;
 
 public class Edge {
   private long id;
@@ -7,18 +7,12 @@ public class Edge {
   protected String label;
   protected String data;
 
-  public Edge() {
-    this.id = 0;
-    this.src = 0;
-    this.dst = 0;
-    this.label = "";
-    this.data = "";
-  }
-
   public Edge(final long id, final long src, final long dst) {
     this.id = id;
     this.src = src;
     this.dst = dst;
+    this.label = "";
+    this.data = "";
   }
 
   public Edge(final long id, final long src, final long dst, final String label, final String data) {

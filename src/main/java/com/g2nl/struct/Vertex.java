@@ -1,18 +1,14 @@
-package com.g2nl.structure;
+package com.g2nl.struct;
 
 public class Vertex {
   private long id;
   protected String label;
   protected String data;
 
-  public Vertex() {
-    this.id = 0;
-    this.label = "";
-    this.data = "";
-  }
-
   public Vertex(final long id) {
     this.id = id;
+    this.label = "";
+    this.data = "";
   }
 
   public Vertex(final long id, final String label, final String data) {

@@ -6,7 +6,6 @@
     <artifactId>g2nl</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
-
     <build>
         <plugins>
             <plugin>
@@ -23,7 +22,7 @@
                             <transformers>
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.g2nl.structure.NL</mainClass>
+                                    <mainClass>com.g2nl.G2NL</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -32,4 +31,16 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+      <dependency>
+				<groupId>org.dllearner</groupId>
+				<artifactId>components-core</artifactId>
+				<version>1.2-SNAPSHOT</version>
+			</dependency>
+      <dependency>
+        <groupId>org.aksw.semweb2nl</groupId>
+        <artifactId>triple2nl</artifactId>
+        <version>0.1-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
 </project>

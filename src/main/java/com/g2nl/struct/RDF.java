@@ -1,4 +1,4 @@
-package com.g2nl.structure;
+package com.g2nl.struct;
 
 public class RDF {
   private long resource;

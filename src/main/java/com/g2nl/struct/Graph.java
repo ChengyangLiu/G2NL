@@ -1,4 +1,4 @@
-package com.g2nl.structure;
+package com.g2nl.struct;
 
 import java.util.ArrayList;
 import java.util.Iterator;
