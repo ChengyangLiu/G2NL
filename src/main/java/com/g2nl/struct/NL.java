@@ -91,11 +91,11 @@ public class NL {
       while (eIter.hasNext()) {
         RDF etmp = eIter.next();
         if (etmp.resource() == id) {
-          Triple t = Triple.create(
+          Triple te = Triple.create(
       			 NodeFactory.createURI("http://dbpedia.org/resource/" + vtmp.value()),
       			 NodeFactory.createURI("http://dbpedia.org/ontology/" + etmp.type()),
       			 NodeFactory.createURI("http://dbpedia.org/resource/" + this.vRDF.get(Integer.valueOf(etmp.value())).value()));
-          tList.add(t);
+          tList.add(te);
         }
       }
       // print URI (subject-predicate-object)
@@ -109,7 +109,7 @@ public class NL {
       TripleConverter converter = new TripleConverter(endpoint);
       // convert the triple into natural language
       String text = converter.convertTriplesToText(tList);
-      rlt += "(" + String.valueOf(count++) + "):" + text + "\n";
+      rlt += String.valueOf(count++) + "." + vtmp.type() + " " + text + "\n";
     }
     return rlt;
   }

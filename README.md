@@ -8,5 +8,5 @@ cd script
 **2.run**
 ```bash
 cd script
-./run.sh
+./run.sh dataFile
 ```
